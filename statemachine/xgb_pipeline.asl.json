@@ -1,0 +1,10 @@
+{
+    "StartAt": "Upload Dataset",
+    "States": {
+      "Upload Dataset": {
+        "Resource": "${DatasetUploadFunctionArn}",
+        "Type": "Task",
+        "End": true
+      }
+    }
+}
