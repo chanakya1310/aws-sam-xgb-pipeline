@@ -42,6 +42,7 @@
             "HyperParameters": {
                 "objective": "multi:softmax",
                 "num_class": "3",
+                "eval_metric": "merror",
                 "num_round": "5"
             },
             "TrainingJobName.$": "$$.Execution.Name"
