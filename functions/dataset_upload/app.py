@@ -9,6 +9,8 @@ def lambda_handler(event, context):
     base_key = 'xgb-pipeline/'
 
     data = pd.read_csv('iris.csv')
+    column_names = ["species", "sepal_length", "sepal_width", 'petal_length', 'petal_width']
+    data = data.reindex(columns=column_names)  #SageMaker Training job requires first column as label
     data = data.sample(frac=1)
     train = data[0:120]
     test = data[120:]

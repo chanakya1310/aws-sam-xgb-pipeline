@@ -4,6 +4,49 @@
       "Upload Dataset": {
         "Resource": "${DatasetUploadFunctionArn}",
         "Type": "Task",
+        "Next": "Train model (XGBoost)"
+      },
+      "Train model (XGBoost)":{
+        "Resource": "arn:aws:states:::sagemaker:createTrainingJob.sync",
+        "Parameters": {
+            "AlgorithmSpecification": {
+                "TrainingImage": "991648021394.dkr.ecr.ap-south-1.amazonaws.com/xgboost:latest",
+                "TrainingInputMode": "File"
+            },
+            "OutputDataConfig": {
+                "S3OutputPath": "s3://aws-sam-cli-managed-default-samclisourcebucket-1r9b55q24oemy/xgb-pipeline/models"
+            },
+            "StoppingCondition": {
+                "MaxRuntimeInSeconds": 86400
+            },
+            "ResourceConfig": {
+                "InstanceCount": 1,
+                "InstanceType": "ml.m5.large",
+                "VolumeSizeInGB": 2
+            },
+            "RoleArn":
+            "arn:aws:iam::009259524924:role/sagemakerTraining",
+            "InputDataConfig": [
+                {
+                    "DataSource": {
+                        "S3DataSource": {
+                            "S3DataDistributionType": "ShardedByS3Key",
+                            "S3DataType": "S3Prefix",
+                            "S3Uri": "s3://aws-sam-cli-managed-default-samclisourcebucket-1r9b55q24oemy/xgb-pipeline/train.csv"
+                        }
+                    },
+                    "ChannelName": "train",
+                    "ContentType": "text/csv"
+                }
+            ],
+            "HyperParameters": {
+                "objective": "multi:softmax",
+                "num_class": "3",
+                "num_round": "5"
+            },
+            "TrainingJobName.$": "$$.Execution.Name"
+        },
+        "Type": "Task",
         "End": true
       }
     }
