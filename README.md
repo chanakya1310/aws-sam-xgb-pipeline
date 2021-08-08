@@ -1,6 +1,6 @@
 # XGBoost-Pipeline
 
-A basic ML pipeline made using the AWS Serverless Application Model.
+A simple ML pipeline made using the AWS Serverless Application Model that uploads the dataset on the local machine to a S3 bucket using a Lambda Function. Once the data is uploaded, a SageMaker Training Job is initiated. As soon as the job is completed, the model artifacts are again stored in the S3 bucket. The whole pipeline has been defined using AWS StepFunction.
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
@@ -17,6 +17,16 @@ The following flow has been defined using StateMachine:<br><br>
   margin-left: auto;
   margin-right: auto;
   width: 50%;" src = './assets/flow.png' height = "400">
+
+Above architecure makes use of the following AWS services:
+
+- Lambda Function
+- S3 Bucket
+- SageMaker
+- StepFunctions
+- Boto3 SDK
+
+<b>Remember to provide the necessary IAM permissions such as PutObject, InitiateSageMakerTraining etc, to the StepFunction and the Lambda Function.</b>
 
 If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.
 The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
